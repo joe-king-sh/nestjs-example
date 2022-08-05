@@ -1,12 +1,10 @@
-### List all messages
+### List
 GET http://localhost:3000/auth?email=1@classmethod.jp HTTP/1.1
 
-### Fetch a messsage
-GET http://localhost:3000/auth/1 HTTP/1.1
+### Fetch One
+GET http://localhost:3000/auth/17 HTTP/1.1
 
-
-
-### Create a user
+### Create
 POST http://localhost:3000/auth/signup HTTP/1.1
 content-type: application/json
 
@@ -14,3 +12,14 @@ content-type: application/json
     "email": "1@classmethod.jp",
     "password": "Wryyyyyyyy!!!"
 }
+
+### Update
+PATCH http://localhost:3000/auth/1 HTTP/1.1
+content-type: application/json
+
+{
+    "email": "1@hotmail.jp"
+}
+
+### Delete
+DELETE http://localhost:3000/auth/1 HTTP/1.1

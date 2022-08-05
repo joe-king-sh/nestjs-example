@@ -1,0 +1,16 @@
+### List all messages
+GET http://localhost:3000/auth?email=1@classmethod.jp HTTP/1.1
+
+### Fetch a messsage
+GET http://localhost:3000/auth/1 HTTP/1.1
+
+
+
+### Create a user
+POST http://localhost:3000/auth/signup HTTP/1.1
+content-type: application/json
+
+{
+    "email": "1@classmethod.jp",
+    "password": "Wryyyyyyyy!!!"
+}

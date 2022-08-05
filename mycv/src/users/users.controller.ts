@@ -39,7 +39,7 @@ export class UsersController {
 
   @Patch('/:id')
   updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
-    this.usersService.update(Number(id), {
+    return this.usersService.update(Number(id), {
       email: body.email,
       password: body.password,
     });
@@ -47,6 +47,6 @@ export class UsersController {
 
   @Delete('/:id')
   deleteUser(@Param('id') id: string) {
-    this.usersService.remove(Number(id));
+    return this.usersService.remove(Number(id));
   }
 }

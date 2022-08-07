@@ -1,17 +1,34 @@
 ### List
-GET http://localhost:3000/auth?email=1@classmethod.jp HTTP/1.1
+GET http://localhost:3000/auth?email=3@classmethod.jp HTTP/1.1
 
 ### Fetch One
-GET http://localhost:3000/auth/17 HTTP/1.1
+GET http://localhost:3000/auth/11 HTTP/1.1
 
 ### Create
 POST http://localhost:3000/auth/signup HTTP/1.1
 content-type: application/json
 
 {
-    "email": "1@classmethod.jp",
-    "password": "Wryyyyyyyy!!!"
+    "email": "a@classmethod.jp",
+    "password": "abc"
 }
+
+### Signin
+POST http://localhost:3000/auth/signin HTTP/1.1
+content-type: application/json
+
+{
+    "email": "a@classmethod.jp",
+    "password": "abc"
+}
+
+### Who ami i
+GET http://localhost:3000/auth/whoami HTTP/1.1
+
+
+### sign out
+POST http://localhost:3000/auth/signout HTTP/1.1
+
 
 ### Update
 PATCH http://localhost:3000/auth/1 HTTP/1.1
@@ -23,3 +40,4 @@ content-type: application/json
 
 ### Delete
 DELETE http://localhost:3000/auth/1 HTTP/1.1
+t

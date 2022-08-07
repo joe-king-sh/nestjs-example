@@ -8,26 +8,58 @@ import {
   Patch,
   Post,
   Query,
-  UseInterceptors,
+  Session,
+  UseGuards,
 } from '@nestjs/common';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserDto } from './dtos/user.dto';
 import { UsersService } from './users.service';
+import { AuthService } from './auth.service';
+import { User } from './user.entity';
+import { CurrentUser } from './decorators/current-user-decorator';
+import { AuthGuard } from '../guards/auth.guard';
 
+@Serialize(UserDto)
 @Controller('auth')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService,
+  ) {}
 
-  @Post('/signup')
-  createUser(@Body() body: CreateUserDto) {
-    this.usersService.create(body.email, body.password);
+  @Get('/whoami')
+  @UseGuards(AuthGuard)
+  async whoAmI(@CurrentUser() user: User) {
+    return user;
   }
 
-  @Serialize(UserDto)
+  @Post('/signup')
+  async createUser(@Body() body: CreateUserDto, @Session() session: any) {
+    const user = await this.authService.signup(body.email, body.password);
+    ('Atempte sign up..');
+    console.log(user);
+    session.userId = user.id;
+    return user;
+  }
+
+  @Post('/signin')
+  async signinUser(@Body() body: CreateUserDto, @Session() session: any) {
+    const user = await this.authService.signin(body.email, body.password);
+    ('Atempte sign in..');
+    console.log(user);
+    session.userId = user.id;
+    return user;
+  }
+
+  @Post('/signout')
+  async signOut(@Session() session: any) {
+    session.userId = null;
+  }
+
   @Get('/:id')
-  async findUser(@Param('id') id: string) {
+  async findUser(@Param('id') id: string): Promise<UserDto> {
     const user = await this.usersService.findOne(Number(id));
     if (!user) {
       throw new NotFoundException('user not found');
@@ -35,7 +67,6 @@ export class UsersController {
     return user;
   }
 
-  @Serialize(UserDto)
   @Get()
   findAllUser(@Query('email') email: string) {
     return this.usersService.find(email);
